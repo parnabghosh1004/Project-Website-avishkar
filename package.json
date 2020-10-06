@@ -1,0 +1,20 @@
+{
+  "name": "drawing-board-app",
+  "version": "1.0.0",
+  "description": "this is the best drawing board app ever made on internet.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "devStart": "nodemon app.js"
+  },
+  "keywords": [
+    "awesome",
+    "project"
+  ],
+  "author": "Parnab Abhigyan Vivek",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.10.7"
+  }
+}
