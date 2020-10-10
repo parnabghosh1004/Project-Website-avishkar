@@ -8,4 +8,4 @@ install nodejs
 
 1) npm i
 2) npm i nodemon --global
-2) npm devStart
+2) nodmon app
