@@ -1,4 +1,5 @@
 Create new folder named "views" and add html files.
+
 Create two new folders inside public folder name them as "css" and "js" to includes all css and js files.
 
 
