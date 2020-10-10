@@ -1,7 +1,6 @@
 Create new folder named "views" and add html files.
 
-Create two new folders inside public folder name them as "css" and "js" to includes all css and js files.
-
+Create new folder named "public" and again create two new folders inside public folder and name them as "css" and "js" to include all the css and js files.
 
 if you want to run the server
 
