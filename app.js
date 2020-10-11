@@ -20,12 +20,18 @@ mongoose.connection.on("error", (e) => {
 // express specific
 app.set('views', __dirname + '/views')
 app.set('view engine', 'ejs')
-// app.set('layout', 'layouts/layout')
-// app.use(expressLayouts)
+app.set('layout', 'layouts/layout')
+app.use(expressLayouts)
 app.use(express.static('public'))
 
 // registering all the routes
 app.use(require('./routes/auth'))
+app.use(require('./routes/user'))
+
+
+app.get('/', (req, res) => {
+    res.redirect('/signup')
+})
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)

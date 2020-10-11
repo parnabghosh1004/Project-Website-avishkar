@@ -1,0 +1,88 @@
+<div class="d-flex flex-row justify-content-center align-items-center bd-highlight mb-3" id="dashboard">
+    <div class="card m s my-5 mx-5" style="width: 24rem;">
+        <img src="https://res.cloudinary.com/instaimagesparnab/image/upload/v1601044739/146-1461473_default-profile-picture-transparent_rx1wow.png"
+            class="card-img-top rounded" alt="profile">
+        <div class="card-body">
+            <h5 class="card-title">Name - Parnab Ghosh</h5>
+            <a href="#" class="btn btn-primary btn-block">Change Profile photo</a>
+        </div>
+    </div>
+
+    <div class="accordion mx-5" id="accordionExample" style="width: 70%;">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Create Team
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                placeholder="Enter any team name">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="exampleInputPassword1"
+                                placeholder="Enter any team Id">
+                            <small id="emailHelp" class="form-text text-muted"> *Id should be a strong password</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Join to Team
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="exampleInputPassword1"
+                                placeholder="Enter team Id to join">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Join</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        My Created Teams
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- contentFor('title') %>
+dashboard/userid
+
+<%- contentFor('style') %>
+
+<style>
+    @media only screen and (max-width: 776px) {
+        #dashboard {
+            flex-direction: column !important;
+        }
+    }
+</style>
