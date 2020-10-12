@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <title>Dream_Dev - Login</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: blanchedalmond;
+        }
+
+        .row {
+            background: rgb(244, 246, 250);
+            border-radius: 30px;
+            box-shadow: 12px 12px 22px grey;
+        }
+
+        img {
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+        }
+
+        .btn1 {
+            border: none;
+            outline: none;
+            height: 50px;
+            width: 100%;
+            background-color: black;
+            color: white;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .btn1:hover {
+            background: white;
+            border: 1px solid;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Code for navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <p>Dream-Dev</p>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent1">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Create an account <span class="sr-only">(current)</span></a>
+            </li>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Login <span class="sr-only">(current)</span></a>
+            </li>
+        </div>
+      </nav>
+      <!-- Code for form of Sign in and Sign up -->
+    <section class="Form my-4 mx-5">
+        <div class="container">
+            <div class="row no-gutters">
+                <div class="col-lg-5">
+                    <img src="./Ucopy.jpg" class="img-fluid" alt="">
+                </div>
+                <div class="col-lg-7 px-5 pt-5">
+                    <h1 class="font-weight-bold py-3">Dream_Dev</h1>
+                    <h4>Sign in to your account</h4>
+                    <form>
+                        <div class="form-row">
+                            <div class="col-lg-7">
+                                <input type="eamil" placeholder="Email-Address" class="form-control my-3 p-4">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-lg-7">
+                                <input type="password" placeholder="*****" class="form-control my-3 p-4">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-lg-7">
+                                <button type="button" class="btn1" onclick="togglehide()">Login</button>
+                            </div>
+
+                        </div>
+                        <a href="#">Forgot password</a>
+                        <div>
+                            OR
+                            <div>
+                                login from here
+                                <a href="#"><img src="google icon.png" alt="Google"></a>
+                                <a href="#"><img src="github icon.png" alt="Github"></a>
+                                <a href="#"><img src="facebook icon.png" alt="Facebook"></a>
+                            </div>
+                        </div>
+                         <!-- Code for using Sign up option -->
+                        <p>Don't have an account? <a href="#" id="signup">Register here</a></p>
+                        <div id="signup">
+                            <section class="Form my-4 mx-5">
+                                <div class="container">
+                                    <div class="row no-gutters">
+                                        <div class="col-lg-5">
+                                            <img src="./Ucopy.jpg" class="img-fluid" alt="">
+                                        </div>
+                                        <div class="col-lg-7 px-5 pt-5">
+                                            <h1 class="font-weight-bold py-3">Dream_Dev</h1>
+                                            <h4>Sign in to your account</h4>
+                                             <form> 
+                                                <div class="form-row">
+                                                    <div class="col-lg-7">
+                                                        <input type="Name" placeholder="First Name"
+                                                            class="form-control my-3 p-4">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-lg-7">
+                                                        <input type="Last Name" placeholder="Last Name"
+                                                            class="form-control my-3 p-4">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-lg-7">
+                                                        <input type="eamil" placeholder="Email-Address"
+                                                            class="form-control my-3 p-4">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-lg-7">
+                                                        <input type="password" placeholder="*****"
+                                                            class="form-control my-3 p-4">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-lg-7">
+                                                        <input type="password2" placeholder="Confirm password"
+                                                            class="form-control my-3 p-4">
+                                                    </div>
+                                                </div>
+
+                                                <a href="#">Forgot password</a>
+                                                <div>
+                                                    OR
+                                                    <div>
+                                                        Create account from here
+                                                        <a href="#"><img src="google icon.png" alt="Google"></a>
+                                                        <a href="#"><img src="github icon.png" alt="Github"></a>
+                                                        <a href="#"><img src="facebook icon.png" alt="Facebook"></a>
+                                                    </div>
+                                                </div>
+
+                                             </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section> 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+    <script>
+        function togglehide() {
+            let Register = document.getElementById('signup');
+        }
+    </script>
+</body>
+
+</html>
