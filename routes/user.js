@@ -1,10 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
+const User = mongoose.model('User')
+const requireLogin = require('../middleware/requireLogin')
 
-router.get('/dashboard', (req, res) => {
-    res.render('dashboard')
+router.post('/dashboard', requireLogin, (req, res) => {
+    User.findById(req.user._id)
+        .select('-password')
+        .then(user => {
+            return res.json(user)
+        })
+        .catch(e => res.status(404).json({ error: "User not found" }))
 })
 
 module.exports = router

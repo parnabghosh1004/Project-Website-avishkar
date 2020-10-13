@@ -1,0 +1,167 @@
+<!-- Code for navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Dream_Dev</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/signin">Login</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/signup">Signup</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<br>
+
+<!-- toast -->
+<div class="container" style="z-index: 1000;">
+    <div class="toast" data-delay=4000>
+        <div class="toast-header"><strong class="toast-head"></strong></div>
+        <div class="toast-body"></div>
+    </div>
+</div>
+
+
+<!-- Code for form of Sign in and Sign up -->
+<section class="Form my-5 mx-5">
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-lg-5">
+            </div>
+            <div class="col-lg-7 px-5 pt-5">
+                <h1 class="font-weight-bold py-3">Dream_Dev</h1>
+                <h4>Sign in to your account</h4>
+                <form id="login">
+                    <div class="form-row">
+                        <div class="col-lg-7">
+                            <input type="email" placeholder="Enter your Email Address" class="form-control my-2 p-4"
+                                required id="email">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-7">
+                            <input type="password" placeholder="Enter your Password" class="form-control my-2 p-4"
+                                required id="password">
+                        </div>
+                    </div>
+                    <div class="form-row my-2">
+                        <div class="col-lg-7">
+                            <button type="submit" class="btn1">Login</button>
+                        </div>
+
+                    </div>
+                    <a href="#">Forgot password</a>
+                    <div>
+                        <div>
+                            login with &ThickSpace;
+                            <a href="#"><i class="fa fa-google"></i>&ThickSpace;</a>
+                            <a href="#"><i class="fa fa-facebook"></i>&ThickSpace;</a>
+                            <a href="#"><i class="fa fa-github"></i>&ThickSpace;</a>
+                        </div>
+                    </div>
+                    <!-- Code for using Sign up option -->
+                    <p>Don't have an account? <a href="/signup" id="signup">Register here</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- contentFor('title') %>
+Dream_Dev - Login
+
+<%- contentFor('style') %>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: blanchedalmond;
+    }
+
+    .row {
+        background: rgb(244, 246, 250);
+        border-radius: 30px;
+        box-shadow: 12px 12px 22px grey;
+    }
+
+    img {
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+    }
+
+    .btn1 {
+        border: none;
+        outline: none;
+        height: 50px;
+        width: 100%;
+        background-color: black;
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .btn1:hover {
+        background: white;
+        border: 1px solid;
+        color: black;
+    }
+</style>
+<script src="https://kit.fontawesome.com/1bd8840b7b.js" crossorigin="anonymous"></script>
+
+<%- contentFor('script') %>
+<script>
+
+    document.querySelector('.toast-head').innerText = "Success !"
+    document.querySelector('.toast-body').innerText = "User Saved successfully !"
+    $(document).ready(() => {
+        $('.toast').toast('show')
+    })
+
+    let loginForm = document.getElementById('login')
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+
+        let email = document.getElementById('email').value
+        let password = document.getElementById('password').value
+
+        fetch('/signin', {
+            method: "post",
+            headers: {
+                "content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                password,
+                email,
+            })
+        }).then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    document.querySelector('.toast-head').innerText = "Error !"
+                    document.querySelector('.toast-body').innerText = data.error
+                    $(document).ready(() => {
+                        $('.toast').toast('show')
+                    })
+                }
+                else {
+                    localStorage.setItem("jwt", data.token)
+                    localStorage.setItem("user", JSON.stringify(data.user))
+                    window.location.href = `${window.location.origin}/dashboard`
+                }
+
+            })
+            .catch(e => console.log(e))
+    })
+
+</script>
