@@ -19,10 +19,9 @@
     </div>
 </nav>
 
-<br>
 
 <!-- toast -->
-<div class="container" style="z-index: 1000;">
+<div class="container">
     <div class="toast" data-delay=4000>
         <div class="toast-header"><strong class="toast-head"></strong></div>
         <div class="toast-body"></div>
@@ -79,89 +78,10 @@
 Dream_Dev - Login
 
 <%- contentFor('style') %>
-<style>
-    * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
 
-    body {
-        background: blanchedalmond;
-    }
-
-    .row {
-        background: rgb(244, 246, 250);
-        border-radius: 30px;
-        box-shadow: 12px 12px 22px grey;
-    }
-
-    img {
-        border-top-left-radius: 30px;
-        border-bottom-left-radius: 30px;
-    }
-
-    .btn1 {
-        border: none;
-        outline: none;
-        height: 50px;
-        width: 100%;
-        background-color: black;
-        color: white;
-        border-radius: 4px;
-        font-weight: bold;
-    }
-
-    .btn1:hover {
-        background: white;
-        border: 1px solid;
-        color: black;
-    }
-</style>
+<link rel="stylesheet" href="/static/css/login.css">
 <script src="https://kit.fontawesome.com/1bd8840b7b.js" crossorigin="anonymous"></script>
 
 <%- contentFor('script') %>
-<script>
 
-    document.querySelector('.toast-head').innerText = "Success !"
-    document.querySelector('.toast-body').innerText = "User Saved successfully !"
-    $(document).ready(() => {
-        $('.toast').toast('show')
-    })
-
-    let loginForm = document.getElementById('login')
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault()
-
-        let email = document.getElementById('email').value
-        let password = document.getElementById('password').value
-
-        fetch('/signin', {
-            method: "post",
-            headers: {
-                "content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                password,
-                email,
-            })
-        }).then(res => res.json())
-            .then(data => {
-                if (data.error) {
-                    document.querySelector('.toast-head').innerText = "Error !"
-                    document.querySelector('.toast-body').innerText = data.error
-                    $(document).ready(() => {
-                        $('.toast').toast('show')
-                    })
-                }
-                else {
-                    localStorage.setItem("jwt", data.token)
-                    localStorage.setItem("user", JSON.stringify(data.user))
-                    window.location.href = `${window.location.origin}/dashboard`
-                }
-
-            })
-            .catch(e => console.log(e))
-    })
-
-</script>
+<script src="/static/js/login.js"></script>
