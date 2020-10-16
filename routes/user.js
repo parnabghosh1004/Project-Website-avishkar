@@ -13,16 +13,4 @@ router.post('/dashboard', requireLogin, (req, res) => {
         .catch(e => res.status(404).json({ error: "User not found" }))
 })
 
-router.post('/createroom', requireLogin, (req, res) => {
-
-})
-
-router.post('/joinroom', requireLogin, (req, res) => {
-
-})
-
-router.get('/db', (req, res) => {
-    res.render('drawingboard')
-})
-
 module.exports = router

@@ -45,13 +45,9 @@ window.addEventListener('load', () => {
 
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
-                            <form>
+                            <form id="createRoom">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                                        placeholder="Enter any room name">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="exampleInputPassword1"
+                                    <input type="text" class="form-control" id="roomIdAdmin"
                                         placeholder="Enter any room Id">
                                     <small id="emailHelp" class="form-text text-muted"> *Id should be a strong password</small>
                                 </div>
@@ -71,9 +67,9 @@ window.addEventListener('load', () => {
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                         <div class="card-body">
-                            <form>
+                            <form id="joinRoom">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="exampleInputPassword1"
+                                    <input type="text" class="form-control" id="roomId"
                                         placeholder="Enter team Id to join">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Join</button>
@@ -103,7 +99,68 @@ window.addEventListener('load', () => {
         .catch(e => console.log(e))
 })
 
-document.getElementById('logout').addEventListener('click', () => {
-    localStorage.clear()
-    window.location.href = `${window.location.origin}/signin`
+
+document.addEventListener('change', () => {
+
+    let createRoom = document.getElementById('createRoom')
+    let joinRoom = document.getElementById('joinRoom')
+    let name = `${JSON.parse(localStorage.getItem('user')).firstName} ${JSON.parse(localStorage.getItem('user')).lastName}`
+    let id = `${JSON.parse(localStorage.getItem('user'))._id}`
+
+    createRoom.addEventListener('submit', (e) => {
+        e.preventDefault()
+
+        let roomId = document.getElementById('roomIdAdmin').value
+
+        fetch('/createRoom', {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+                'Content-Type': 'application/json',
+            },
+            method: "post",
+            body: JSON.stringify({
+                roomId,
+                name,
+                type: 'admin',
+                id
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                window.location.href = `${window.location.origin}/room/${data.roomId}`
+            })
+            .catch(e => console.log(e))
+
+    })
+
+    joinRoom.addEventListener('submit', (e) => {
+        e.preventDefault()
+
+        let roomId = document.getElementById('roomId').value
+
+        fetch('/joinRoom', {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+                'Content-Type': 'application/json',
+            },
+            method: "post",
+            body: JSON.stringify({
+                roomId,
+                name,
+                type: 'user',
+                id
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) console.log(data.error)
+                else window.location.href = `${window.location.origin}/room/${data.roomId}`
+            })
+            .catch(e => console.log(e))
+    })
+
+    document.getElementById('logout').addEventListener('click', () => {
+        localStorage.clear()
+        window.location.href = `${window.location.origin}/signin`
+    })
 })

@@ -1,0 +1,77 @@
+<div class="wrapper">
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3></h3>
+        </div>
+        <ul class="lisst-unstyled components">
+            <p>Dream-Dev</p>
+            <!-- <li class="active">
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+                <ul class="collapse lisst-unstyled" id="homeSubmenu">
+                    <li>
+                        <a href="#">Home 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Home 2</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Class Name
+            </li> -->
+            <li id="roomID"></li>
+            <li id="ClientName"></li><br>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+                    class="dropdown-toggle">Participants</a>
+                <ul class="collapse lisst-unstyled" id="pageSubmenu">
+                    <li>${index} <a>Name : ${user[i]}</a></li>
+                </ul>
+            </li><br>
+            <li>
+                <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false"
+                    class="dropdown-toggle">Organiser</a>
+                <ul class="collapse lisst-unstyled" id="pageSubmenu1"></ul>
+            <li><br>
+                <a href="#">Contact us</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="content" style="padding:0px;">
+        <!-- <nav class="navbar navbar-expanded-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn  btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span></span>
+                    </button>
+                </div>
+            </nav> -->
+        <div id="drawingboard">
+            <canvas id="canvas">Your browser does not support HTML5 canvas</canvas><br>
+            <button id="selectBtn" class="btn btn-primary"><i class="fas fa-mouse-pointer"></i></button>
+            <button id="pen" class="btn btn-primary"><i class="fas fa-pen"></i></button>
+            <button id="eraser" class="btn btn-primary"><i class="fas fa-eraser"></i></button>
+            <label for="">Pen size : </label>
+            <input type="range" name="" id="penSize" min="1" max="20" step="1" value="8">
+            <label for="">Eraser Size : </label>
+            <input type="range" id="eraserSize" min="5" max="60" step="5" value="20">
+            <label for="">Color : </label>
+            <input type="color" name="" id="color-picker">
+        </div>
+    </div>
+</div>
+
+<%- contentFor('style') %>
+
+<link rel="stylesheet" href="/static/css/WhiteBoardRoom.css">
+<script src="https://kit.fontawesome.com/1bd8840b7b.js" crossorigin="anonymous"></script>
+
+<%- contentFor('script') %>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/static/js/WhiteBoardRoom.js"></script>
+<script src="/static/js/canvas.js"></script>
+
+<%- contentFor('title') %>
+Dream_Dev - WhiteBoard
