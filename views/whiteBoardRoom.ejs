@@ -1,65 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Dream_Dev</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/signin">Room Info</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/signup">Chats</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <div class="wrapper">
+    <div id="content" style="padding:0px;">
+        <div id="drawingboard">
+            <canvas id="canvas">Your browser
+                does not support HTML5 canvas</canvas><br>
+            <button id="selectBtn" class="btn btn-secondary"><i class="fas fa-mouse-pointer"></i></button>
+            <button id="pen" class="btn btn-secondary"><i class="fas fa-pen"></i></button>
+            <button id="eraser" class="btn btn-secondary"><i class="fas fa-eraser"></i></button>
+            <button id="clearDrawings" class="btn btn-primary">Clear</button>
+            <button id="saveDrawings" class="btn btn-primary">Save</button>
+            <label for="" id="penText">Pen size : </label>
+            <input type="range" name="" id="penSize" min="1" max="20" step="1" value="8">
+            <label for="" id="eraseText">Eraser Size : </label>
+            <input type="range" id="eraserSize" min="5" max="60" step="5" value="20">
+            <label for="" id="colorText">Color : </label>
+            <input type="color" name="" id="color-picker">
+        </div>
+    </div>
     <nav id="sidebar">
         <div class="sidebar-header">
-            <h3></h3>
+            <h4>Room Info</h4>
         </div>
-        <ul class="lisst-unstyled components">
-            <p>Dream-Dev</p>
-            <!-- <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-                <ul class="collapse lisst-unstyled" id="homeSubmenu">
-                    <li>
-                        <a href="#">Home 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 2</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                Class Name
-            </li> -->
+        <ul class="lisst-unstyled components" id="sidenavItems" style="list-style: none;">
             <li id="roomID"></li>
             <li id="ClientName"></li><br>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
                     class="dropdown-toggle">Participants</a>
-                <ul class="collapse lisst-unstyled" id="pageSubmenu">
-                    <li>${index} <a>Name : ${user[i]}</a></li>
-                </ul>
+                <ul class="collapse lisst-unstyled" id="pageSubmenu" style="list-style: none;"></ul>
             </li><br>
             <li>
                 <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false"
                     class="dropdown-toggle">Organiser</a>
-                <ul class="collapse lisst-unstyled" id="pageSubmenu1"></ul>
-            <li><br>
-                <a href="#">Contact us</a>
+                <ul class="collapse lisst-unstyled" style="list-style: none;" id="pageSubmenu1"></ul>
             </li>
         </ul>
     </nav>
-
-    <div id="content" style="padding:0px;">
-        <!-- <nav class="navbar navbar-expanded-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn  btn-info">
-                        <i class="fas fa-align-left"></i>
-                        <span></span>
-                    </button>
-                </div>
-            </nav> -->
-        <div id="drawingboard">
-            <canvas id="canvas">Your browser does not support HTML5 canvas</canvas><br>
-            <button id="selectBtn" class="btn btn-primary"><i class="fas fa-mouse-pointer"></i></button>
-            <button id="pen" class="btn btn-primary"><i class="fas fa-pen"></i></button>
-            <button id="eraser" class="btn btn-primary"><i class="fas fa-eraser"></i></button>
-            <label for="">Pen size : </label>
-            <input type="range" name="" id="penSize" min="1" max="20" step="1" value="8">
-            <label for="">Eraser Size : </label>
-            <input type="range" id="eraserSize" min="5" max="60" step="5" value="20">
-            <label for="">Color : </label>
-            <input type="color" name="" id="color-picker">
-        </div>
-    </div>
 </div>
 
 <%- contentFor('style') %>
@@ -71,7 +65,6 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/WhiteBoardRoom.js"></script>
-<script src="/static/js/canvas.js"></script>
 
 <%- contentFor('title') %>
 Dream_Dev - WhiteBoard

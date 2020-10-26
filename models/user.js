@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'default'
     },
+    WhiteBoards: [{ type: String }]
 })
 
 mongoose.model("User", userSchema)

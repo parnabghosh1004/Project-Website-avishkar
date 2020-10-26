@@ -9,6 +9,6 @@ module.exports = {
         CLOUD_NAME: 'instaimagesparnab',
         API_KEY: '633854716324753',
         API_SECRET: 'OAlI6RKFmiauVj32b91tu3wUkpw',
-        UPLOAD_PRESET: 'insta-clone'
+        UPLOAD_PRESET: 'drawingboard'
     }
 }
