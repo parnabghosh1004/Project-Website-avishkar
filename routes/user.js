@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer')
 const crypto = require('crypto')
 const cloudinary = require('cloudinary').v2
 const { URL, USER, PASS } = require('../config/keys').EMAIL
+const { CLOUDINARY } = require('../config/keys')
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
