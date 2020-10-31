@@ -77,6 +77,21 @@ window.addEventListener('load', () => {
                         </div>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                                data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                My Saved WhiteBoards
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body" id="cardbody">
+                            <ul id="myWhiteBoards" style="list-style: none;overflow-y: scroll; max-height:20rem;max-width:100%;padding-inline-start: 0px;"></ul>
+                        </div>
+                    </div>
+                </div>
                 </div>
                 <div class="modal fade" id="picChange" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -107,12 +122,54 @@ window.addEventListener('load', () => {
                     </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                 </div>
             </div>
         </div>
     </div>
-</div> `
+    </div> `
+                setTimeout(() => {
+                    if (JSON.parse(localStorage.getItem('user')).WhiteBoards.length) {
+
+                        JSON.parse(localStorage.getItem('user')).WhiteBoards.forEach(wb => {
+                            document.getElementById('myWhiteBoards').innerHTML += `<li style="max-width:100%"><div class="card" style="width: 100%">
+                            <div class="row no-gutters">
+                                <div class="col-sm-5">
+                                    <img class="card-img" src="${wb.img}" alt="...">
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="card-body">
+                                    <div class="accordion" id="${wb.img_id}">
+                                    <div class="card" style="width:99%">
+                                      <div class="card-header" id="heading${wb.img_id}">
+                                        <h2 class="mb-0">
+                                          <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${wb.img_id}" aria-expanded="true" aria-controls="collapse${wb.img_id}">
+                                            Share Board
+                                          </button>
+                                        </h2>
+                                      </div>
+                                      <div id="collapse${wb.img_id}" aria-labelledby="heading${wb.img_id}" data-parent="#${wb.img_id}" class="collapse">
+                                        <div class="card-body">
+                                        <p>Enter the email id to whom you want to share board</p><br>
+                                        <form class="form-inline" id="${wb.img}" onsubmit="shareLink(event)">
+                                            <div class="form-group mx-sm-3 mb-2">
+                                                <input type="email" class="form-control" id="email${wb.img}" placeholder="Email" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mb-2">Share Link</button>
+                                        </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div></li>`
+                        })
+                    }
+                    else {
+                        document.getElementById('cardbody').innerHTML = `<p> No white Boards created !`
+                    }
+                }, 0);
             }
 
         })
@@ -123,6 +180,29 @@ document.getElementById('logout').addEventListener('click', () => {
     localStorage.clear()
     window.location.href = `${window.location.origin}/signin`
 })
+
+function shareLink(e) {
+    e.preventDefault()
+    let url = e.target.id
+    let email = document.getElementById(`email${url}`).value
+
+    fetch('/shareBoardToEmail', {
+        method: 'post',
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            receiver: email,
+            url,
+            sender: JSON.parse(localStorage.getItem('user')).email
+        })
+    }).then(res => res.json())
+        .then(result => {
+            console.log(result)
+        })
+}
+
 
 document.addEventListener('change', () => {
 

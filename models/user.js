@@ -28,7 +28,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'default'
     },
-    WhiteBoards: [{ type: String }]
+    WhiteBoards: [{
+        img: { type: String },
+        img_id: { type: String },
+        drawings: { type: Array }
+    }],
 })
 
 mongoose.model("User", userSchema)

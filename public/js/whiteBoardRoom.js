@@ -13,6 +13,7 @@ const eraserSlider = document.getElementById('eraserSize')
 const selectBtn = document.getElementById('selectBtn')
 const saveBtn = document.getElementById('saveDrawings')
 const clearBtn = document.getElementById('clearDrawings')
+const newBoard = document.getElementById('newBoard')
 const context = canvas.getContext("2d")
 
 // disable right clicking
@@ -22,6 +23,7 @@ document.oncontextmenu = function () {
 
 // list of all strokes drawn
 let drawings = [];
+let prevBoardId = null
 
 // coordinates of our cursor
 let cursorX;
@@ -64,7 +66,7 @@ socket.on('user-joined', (users) => {
     }
     if (type == "admin") {
         let src = canvas.toDataURL('image/png')
-        socket.emit('send', { src, roomid })
+        socket.emit('send', src, drawings, roomid)
     }
 })
 
@@ -125,27 +127,37 @@ function redrawCanvas() {
         drawLine(toScreenX(line.x0), toScreenY(line.y0), toScreenX(line.x1), toScreenY(line.y1), line.width, line.color)
     }
     let src = canvas.toDataURL('image/png')
-    socket.emit('send', { src, roomid })
+    socket.emit('send', src, drawings, roomid)
 }
 redrawCanvas()
 
-socket.on('recieve', ({ src, roomid }) => {
+socket.on('recieve', (src, d, roomid) => {
     let img = new Image()
     img.src = src
+    img.crossOrigin = "anonymous"
     img.onload = () => {
         context.drawImage(img, 0, 0)
     }
+    drawings = d
 })
 
 socket.on('receiveAccess', (type) => {
-    if (type === 'allow') showFeatures()
-    else if (type === 'deny') hideFeatures()
+    if (type === 'allow') {
+        document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Allowed'
+        showFeatures()
+    }
+    else if (type === 'deny') {
+        document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Denied'
+        hideFeatures()
+    }
 })
 
 // if the window changes size, redraw the canvas
 window.addEventListener("resize", () => {
     redrawCanvas();
 });
+
+// utility functions
 
 function changeColor(a, b, c) {
     a.classList.remove(a.classList[1])
@@ -168,6 +180,7 @@ function hideFeatures() {
     document.getElementById('penText').style.display = "none"
     document.getElementById('eraseText').style.display = "none"
     document.getElementById('colorText').style.display = "none"
+    document.getElementById('newBoard').style.display = "none"
 }
 
 function showFeatures() {
@@ -194,6 +207,58 @@ function allowDenyAccess(socketId) {
     }
 }
 
+function editBoard(pic) {
+    prevBoardId = pic.split(' ')[1]
+    pic = pic.split(' ')[0]
+    let img = new Image()
+    img.src = pic
+    img.crossOrigin = "anonymous"
+    img.onload = () => {
+        context.drawImage(img, 0, 0)
+    }
+
+    fetch('/getDrawings', {
+        method: 'post',
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            pic: pic,
+            email: JSON.parse(localStorage.getItem("user")).email
+        })
+    }).then(res => res.json())
+        .then(d => {
+            drawings = d
+            let src = canvas.toDataURL('image/png')
+            socket.emit('send', src, d, roomid)
+        })
+}
+
+function delBoard(img) {
+    img = img.replace('del', '')
+    let [img_url, img_id] = img.split(' ')
+    let arr = JSON.parse(localStorage.getItem("user")).WhiteBoards
+    arr = arr.filter(e => e.img !== img_url)
+    localStorage.setItem('user', JSON.stringify({ ...JSON.parse(localStorage.getItem('user')), WhiteBoards: arr }))
+
+    document.getElementById(`board${img_url}`).remove()
+
+    fetch('/deleteBoard', {
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+        },
+        body: JSON.stringify({
+            img_url,
+            img_id
+        })
+    }).then(res => res.json())
+        .then(result => console.log(result))
+
+}
+
 socket.on('i-have-joined', (details, organiser) => {
     cname = details.name
     roomid = details.roomId
@@ -206,15 +271,20 @@ socket.on('i-have-joined', (details, organiser) => {
 
     if (details.type === "user") {
         hideFeatures()
+        document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Denied'
     }
 
     if (details.type === "admin") {
+        document.getElementById('allowAccess').style.display = 'none'
         document.getElementById('sidenavItems').innerHTML += `<br>
         <li>
-            <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false"
-                class="dropdown-toggle">Saved Boards</a>
-            <ul class="collapse lisst-unstyled" style="list-style: none;" id="pageSubmenu2"></ul>
+        <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false"
+        class="dropdown-toggle">My Saved Boards</a>
+        <ul class="collapse lisst-unstyled" style="list-style: none;overflow-y: scroll;max-height: 25rem;margin-top: 8px" id="pageSubmenu2"></ul>
         </li>`
+        JSON.parse(localStorage.getItem('user')).WhiteBoards.forEach(wb => {
+            document.getElementById('pageSubmenu2').innerHTML += `<li style="margin-bottom:10px" id="board${wb.img}"><div class="card" style="width: 15rem; margin:2px"><img class="card-img-top" src="${wb.img}" alt="Card image cap"></div><button type="button" class="btn btn-primary btn-sm" id="${wb.img} ${wb.img_id}" onclick="editBoard(this.id)">Edit</button><button type="button" class="btn btn-primary btn-sm" id="del${wb.img} ${wb.img_id}" onclick="delBoard(this.id)">Delete</button></li>`
+        })
     }
 
     // Mouse Event Handlers
@@ -273,6 +343,12 @@ socket.on('i-have-joined', (details, organiser) => {
         }
     })
 
+    newBoard.addEventListener('click', () => {
+        prevBoardId = null
+        drawings = []
+        redrawCanvas()
+    })
+
     saveBtn.addEventListener('click', () => {
         let imageSrc = canvas.toDataURL('image/png')
         fetch(imageSrc)
@@ -290,6 +366,17 @@ socket.on('i-have-joined', (details, organiser) => {
                 })
                     .then(res => res.json())
                     .then(data => {
+                        let arr = JSON.parse(localStorage.getItem("user")).WhiteBoards
+                        if (prevBoardId) {
+                            arr.forEach((e, i) => {
+                                if (e.img_id === prevBoardId) {
+                                    arr[i] = { img: data.secure_url, img_id: data.public_id }
+                                }
+                            })
+                        }
+                        else arr.push({ img: data.secure_url, img_id: data.public_id })
+                        document.getElementById('pageSubmenu2').innerHTML = ''
+                        localStorage.setItem('user', JSON.stringify({ ...JSON.parse(localStorage.getItem('user')), WhiteBoards: arr }))
                         fetch(`/saveWhiteBoard`, {
                             method: 'put',
                             headers: {
@@ -297,12 +384,19 @@ socket.on('i-have-joined', (details, organiser) => {
                                 "Authorization": `Bearer ${localStorage.getItem("jwt")}`
                             },
                             body: JSON.stringify({
-                                url: data.secure_url
+                                url: data.secure_url,
+                                img_id: data.public_id,
+                                drawings,
+                                prevBoardId
                             })
                         })
                             .then(res => res.json())
-                            .then(data => {
-                                console.log(data)
+                            .then(result => {
+                                console.log(result)
+                                prevBoardId = data.public_id
+                                JSON.parse(localStorage.getItem('user')).WhiteBoards.forEach(wb => {
+                                    document.getElementById('pageSubmenu2').innerHTML += `<li style="margin-bottom:10px" id="board${wb.img}"><div class="card" style="width: 15rem; margin:2px"><img class="card-img-top" src="${wb.img}" alt="Card image cap"></div><button type="button" class="btn btn-primary btn-sm" id="${wb.img} ${wb.img_id}" onclick="editBoard(this.id)">Edit</button><button type="button" class="btn btn-primary btn-sm" id="del${wb.img} ${wb.img_id}" onclick="delBoard(this.id)">Delete</button></li>`
+                                })
                             })
                             .catch(e => console.log(e))
                     })
@@ -361,10 +455,10 @@ function onMouseMove(event) {
         drawLine(cursorX, cursorY, prevCursorX, prevCursorY, lineWidth, colorPicker.value)
     }
     if (enableErase) {
-        if (leftMouseDown) erase(event.pageX - canvas.offsetLeft, event.pageY + 24, eraserSize)
+        if (leftMouseDown) erase(event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop + 24, eraserSize)
     }
     let src = canvas.toDataURL('image/png')
-    socket.emit('send', { src, roomid })
+    socket.emit('send', src, drawings, roomid)
 
     if (rightMouseDown) {
         // move the screen
@@ -415,7 +509,7 @@ function drawLine(x0, y0, x1, y1, lineWidth, color) {
 function erase(x, y, s) {
     context.fillStyle = '#ffffff'
     drawings = drawings.filter(d => {
-        return !(Math.abs(x - d.x0) < s && Math.abs(x - d.x1) < s && Math.abs(y - d.y0) < s && Math.abs(y - d.y1) < s)
+        return !((Math.abs(x - d.x0) < s / 2 && Math.abs(y - d.y0) < s / 2) || (Math.abs(x - d.x1) < s / 2 && Math.abs(y - d.y1) < s / 2))
     })
     redrawCanvas()
 }

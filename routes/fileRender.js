@@ -14,4 +14,17 @@ router.get('/dashboard', (req, res) => {
     res.render('dashboard')
 })
 
+router.get('/resetPassword', (req, res) => {
+    res.render('resetPassword')
+})
+
+router.get('/reset/:token', (req, res) => {
+    res.render('newPassword')
+})
+
+router.get('/accept/', (req, res) => {
+    const query = req.query
+    res.render('acceptBoard', { query })
+})
+
 module.exports = router

@@ -1,9 +1,10 @@
 module.exports = {
     MongoURI: "mongodb+srv://parnabghosh1004:HqFuqf7TjmCXud3Z@cluster0.hdf67.mongodb.net/<dbname>?retryWrites=true&w=majority",
     JWT_SECRET: "2dwcwekckwk45k3n3mgl34",
-    SENDGRID: {
-        API_KEY: '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',
-        EMAIL: 'http://localhost:3000',
+    EMAIL: {
+        USER: 'parnabbbghoshhh1234@gmail.com',
+        PASS: 'folderlock1@_1004',
+        URL: 'http://localhost:5000',
     },
     CLOUDINARY: {
         CLOUD_NAME: 'instaimagesparnab',

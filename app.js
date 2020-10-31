@@ -103,8 +103,8 @@ io.on('connection', socket => {
         rooms[user.roomId][socket.id] = user
         io.to(user.roomId).emit('user-joined', rooms[user.roomId])
     })
-    socket.on('send', ({ src, roomid }) => {
-        socket.to(roomid).broadcast.emit('recieve', { src: src, roomid: roomid })
+    socket.on('send', (src, drawings, roomid) => {
+        socket.to(roomid).broadcast.emit('recieve', src, drawings, roomid)
     })
 
     socket.on('sendAccess', (type, socketId) => {
