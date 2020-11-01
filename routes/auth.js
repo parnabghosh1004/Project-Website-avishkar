@@ -89,7 +89,7 @@ router.post('/reset-password', (req, res) => {
                         text: 'hello'
                     }).then(r => console.log('message sent'))
                         .catch(e => console.log(e))
-                    res.json({ message: 'Message has been sent to your email!' })
+                    res.json({ message: 'Link has been sent to your email !' })
                 })
             })
     })

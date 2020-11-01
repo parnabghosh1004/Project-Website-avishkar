@@ -1,6 +1,6 @@
 <!-- Code for navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Dream_Dev</a>
+    <a class="navbar-brand" href="/about">Dream_Dev</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -16,9 +16,9 @@
             </li>
         </ul>
     </div>
-</nav>
+</nav><br>
 
-<div class="container" style="z-index: 1000;">
+<div class="container" style="position: absolute;top:12%;left: 4%;z-index: 10;">
     <div class="toast" data-delay=4000>
         <div class="toast-header"><strong class="toast-head"></strong></div>
         <div class="toast-body"></div>
@@ -37,13 +37,13 @@
                 <form id="signup">
                     <div class="form-row">
                         <div class="col-lg-7">
-                            <input type="Name" placeholder="First Name" class="form-control my-2 p-4" required
+                            <input type="text" placeholder="First Name" class="form-control my-2 p-4" required
                                 id="firstName">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-lg-7">
-                            <input type="Last Name" placeholder="Last Name" class="form-control my-2 p-4" required
+                            <input type="text" placeholder="Last Name" class="form-control my-2 p-4" required
                                 id="lastName">
                         </div>
                     </div>
@@ -99,7 +99,7 @@
 </section>
 
 <%- contentFor('title') %>
-Dream_Dev - Signup
+Dream_Dev | Signup
 
 <%- contentFor('style') %>
 

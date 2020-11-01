@@ -2,6 +2,11 @@ const express = require('express')
 const requireLogin = require('../middleware/requireLogin')
 const router = express.Router()
 
+
+router.get('/about', (req, res) => {
+    res.render('about')
+})
+
 router.get('/signup', (req, res) => {
     res.render('signup')
 })

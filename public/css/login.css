@@ -43,3 +43,30 @@ img {
         padding-right: 90px;
     }
 }
+
+@media only screen and (max-width:450px){
+    .form-control{
+        font-size: 3vw;
+    }
+    h1{
+        font-size: 8vw;
+    }
+    h4{
+        font-size: 5vw;
+    }
+    body{
+        font-size: 3vw;
+    }
+}
+
+@media only screen and (max-width:360px){
+    .form-control{
+        font-size: 2vw;
+    }
+    h1{
+        font-size: 6vw;
+    }
+    h4{
+        font-size: 4vw;
+    }
+}

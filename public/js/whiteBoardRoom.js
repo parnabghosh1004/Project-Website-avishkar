@@ -15,6 +15,7 @@ const saveBtn = document.getElementById('saveDrawings')
 const clearBtn = document.getElementById('clearDrawings')
 const newBoard = document.getElementById('newBoard')
 const context = canvas.getContext("2d")
+const sendBtn = document.getElementById('sendBtn')
 
 // disable right clicking
 document.oncontextmenu = function () {
@@ -45,8 +46,15 @@ let scale = 1;
 
 let cname = "name", roomid = "roomid", type = "admin", id = 'id'
 
-socket.on('user-joined', (users) => {
+socket.on('user-joined', (users, name) => {
     let index = 1
+    if (cname !== name) {
+        document.querySelector('.toast-head').innerText = "New user joined !"
+        document.querySelector('.toast-body').innerText = `${name} has joined the room just now.`
+        $(document).ready(() => {
+            $('.toast').toast('show')
+        })
+    }
     document.getElementById('pageSubmenu').innerHTML = ""
     for (let i in users) {
         if (users[i].id != id) {
@@ -74,6 +82,11 @@ socket.on('left', (leftUser, users) => {
     let index = 1
     if (leftUser.type == "admin") window.location.href = `${window.location.origin}/dashboard`
     else {
+        document.querySelector('.toast-head').innerText = "User left !"
+        document.querySelector('.toast-body').innerText = `${leftUser.name} has left the room just now !`
+        $(document).ready(() => {
+            $('.toast').toast('show')
+        })
         document.getElementById('pageSubmenu').innerHTML = ""
         for (let i in users) {
             if (users[i].id != id) {
@@ -117,7 +130,7 @@ function trueWidth() {
 
 function redrawCanvas() {
     // set the canvas to the size of the window
-    canvas.width = document.body.clientWidth - 265;
+    canvas.width = document.body.clientWidth - 6;
     canvas.height = document.body.clientHeight - 120;
 
     context.fillStyle = '#fff';
@@ -131,7 +144,7 @@ function redrawCanvas() {
 }
 redrawCanvas()
 
-socket.on('recieve', (src, d, roomid) => {
+socket.on('receive', (src, d, roomid) => {
     let img = new Image()
     img.src = src
     img.crossOrigin = "anonymous"
@@ -139,6 +152,10 @@ socket.on('recieve', (src, d, roomid) => {
         context.drawImage(img, 0, 0)
     }
     drawings = d
+})
+
+socket.on('receiveMsg', (msg, name) => {
+    appendMsg(msg, name)
 })
 
 socket.on('receiveAccess', (type) => {
@@ -181,6 +198,11 @@ function hideFeatures() {
     document.getElementById('eraseText').style.display = "none"
     document.getElementById('colorText').style.display = "none"
     document.getElementById('newBoard').style.display = "none"
+    document.querySelector('.toast-head').innerText = "Access"
+    document.querySelector('.toast-body').innerText = "Access to the whiteboard taken"
+    $(document).ready(() => {
+        $('.toast').toast('show')
+    })
 }
 
 function showFeatures() {
@@ -194,6 +216,11 @@ function showFeatures() {
     document.getElementById('penText').style.display = "inline-block"
     document.getElementById('eraseText').style.display = "inline-block"
     document.getElementById('colorText').style.display = "inline-block"
+    document.querySelector('.toast-head').innerText = "Access"
+    document.querySelector('.toast-body').innerText = "Access to the whiteboard has been provided"
+    $(document).ready(() => {
+        $('.toast').toast('show')
+    })
 }
 
 function allowDenyAccess(socketId) {
@@ -255,8 +282,41 @@ function delBoard(img) {
             img_id
         })
     }).then(res => res.json())
-        .then(result => console.log(result))
+        .then(result => {
+            document.querySelector('.toast-head').innerText = "Success !"
+            document.querySelector('.toast-body').innerText = result.message
+            $(document).ready(() => {
+                $('.toast').toast('show')
+            })
+        })
 
+}
+
+function appendMsg(msg, name) {
+    document.querySelector('.chats').innerHTML += `<div class="insidetext">
+    <p style="color: black;">${msg}</p>
+    <p style="float: right; font-size: 10px;"> ~ ${name}</p>
+    </div>`
+}
+
+function drawLine(x0, y0, x1, y1, lineWidth, color) {
+    context.beginPath();
+    context.moveTo(x0, y0);
+    context.lineTo(x1, y1);
+    context.strokeStyle = color;
+    context.lineWidth = lineWidth;
+    context.lineCap = "round"
+    context.stroke();
+}
+
+function erase(x, y, s) {
+    context.fillStyle = '#ffffff'
+    context.fillRect(x, y, s, s)
+    drawings = drawings.filter(d => {
+        return !((Math.abs(x - d.x0) < s / 2 && Math.abs(y - d.y0) < s / 2) && (Math.abs(x - d.x1) < s / 2 && Math.abs(y - d.y1) < s / 2))
+    })
+    console.log(drawings.length)
+    // redrawCanvas()
 }
 
 socket.on('i-have-joined', (details, organiser) => {
@@ -269,8 +329,25 @@ socket.on('i-have-joined', (details, organiser) => {
     document.getElementById('pageSubmenu1').innerHTML = `<li><a>${organiser}</a></li>`
     socket.emit('new-user-joined', details)
 
+    document.querySelector('.toast-head').innerText = "Welcome !"
+    document.querySelector('.toast-body').innerText = (cname !== organiser) ? `Welcome to the room created by ${organiser}` : `You created this room`
+    $(document).ready(() => {
+        $('.toast').toast('show')
+    })
+
     if (details.type === "user") {
-        hideFeatures()
+        document.getElementById('eraser').style.display = "none"
+        document.getElementById('pen').style.display = "none"
+        document.getElementById('color-picker').style.display = "none"
+        document.getElementById('penSize').style.display = "none"
+        document.getElementById('eraserSize').style.display = "none"
+        document.getElementById('selectBtn').style.display = "none"
+        document.getElementById('saveDrawings').style.display = "none"
+        document.getElementById('clearDrawings').style.display = "none"
+        document.getElementById('penText').style.display = "none"
+        document.getElementById('eraseText').style.display = "none"
+        document.getElementById('colorText').style.display = "none"
+        document.getElementById('newBoard').style.display = "none"
         document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Denied'
     }
 
@@ -287,14 +364,14 @@ socket.on('i-have-joined', (details, organiser) => {
         })
     }
 
-    // Mouse Event Handlers
+    // Mouse Event Handlers - Window
     canvas.addEventListener('mousedown', onMouseDown)
     canvas.addEventListener('mouseup', onMouseUp, false)
     canvas.addEventListener('mouseout', onMouseUp, false)
     canvas.addEventListener('mousemove', onMouseMove, false)
     canvas.addEventListener('wheel', onMouseWheel, false)
 
-    // Touch Event Handlers 
+    // Touch Event Handlers - Mobile and tab
     canvas.addEventListener('touchstart', onTouchStart)
     canvas.addEventListener('touchend', onTouchEnd)
     canvas.addEventListener('touchcancel', onTouchEnd)
@@ -336,7 +413,7 @@ socket.on('i-have-joined', (details, organiser) => {
         canvas.classList.remove('penStyle')
         if (enableErase) enablePainting = false
         else {
-            eraser.classList.remove(c.classList[1])
+            eraser.classList.remove(pen.classList[1])
             eraser.classList.add('btn-secondary')
             selectBtn.classList.remove(pen.classList[1])
             selectBtn.classList.add('btn-primary')
@@ -347,6 +424,11 @@ socket.on('i-have-joined', (details, organiser) => {
         prevBoardId = null
         drawings = []
         redrawCanvas()
+        document.querySelector('.toast-head').innerText = "Success !"
+        document.querySelector('.toast-body').innerText = "New white board created !"
+        $(document).ready(() => {
+            $('.toast').toast('show')
+        })
     })
 
     saveBtn.addEventListener('click', () => {
@@ -392,7 +474,11 @@ socket.on('i-have-joined', (details, organiser) => {
                         })
                             .then(res => res.json())
                             .then(result => {
-                                console.log(result)
+                                document.querySelector('.toast-head').innerText = "Success !"
+                                document.querySelector('.toast-body').innerText = result.message
+                                $(document).ready(() => {
+                                    $('.toast').toast('show')
+                                })
                                 prevBoardId = data.public_id
                                 JSON.parse(localStorage.getItem('user')).WhiteBoards.forEach(wb => {
                                     document.getElementById('pageSubmenu2').innerHTML += `<li style="margin-bottom:10px" id="board${wb.img}"><div class="card" style="width: 15rem; margin:2px"><img class="card-img-top" src="${wb.img}" alt="Card image cap"></div><button type="button" class="btn btn-primary btn-sm" id="${wb.img} ${wb.img_id}" onclick="editBoard(this.id)">Edit</button><button type="button" class="btn btn-primary btn-sm" id="del${wb.img} ${wb.img_id}" onclick="delBoard(this.id)">Delete</button></li>`
@@ -408,6 +494,14 @@ socket.on('i-have-joined', (details, organiser) => {
         drawings = []
         redrawCanvas()
     })
+
+    sendBtn.addEventListener('click', () => {
+        let msg = document.getElementById('inputText').value
+        appendMsg(msg, cname)
+        socket.emit('sendMsg', msg, cname, roomid)
+        document.getElementById('inputText').value = ""
+    })
+
 })
 
 // mouse functions
@@ -496,23 +590,6 @@ function onMouseWheel(event) {
     redrawCanvas();
 }
 
-function drawLine(x0, y0, x1, y1, lineWidth, color) {
-    context.beginPath();
-    context.moveTo(x0, y0);
-    context.lineTo(x1, y1);
-    context.strokeStyle = color;
-    context.lineWidth = lineWidth;
-    context.lineCap = "round"
-    context.stroke();
-}
-
-function erase(x, y, s) {
-    context.fillStyle = '#ffffff'
-    drawings = drawings.filter(d => {
-        return !((Math.abs(x - d.x0) < s / 2 && Math.abs(y - d.y0) < s / 2) || (Math.abs(x - d.x1) < s / 2 && Math.abs(y - d.y1) < s / 2))
-    })
-    redrawCanvas()
-}
 
 // touch functions
 const prevTouches = [null, null]; // up to 2 touches
@@ -545,47 +622,26 @@ function onTouchMove(event) {
     const prevScaledX = toTrueX(prevTouch0X);
     const prevScaledY = toTrueY(prevTouch0Y);
 
-    if (leftMouseDown && enablePainting) {
-        // add the line to our drawing history
-        drawings.push({
-            x0: prevScaledX,
-            y0: prevScaledY,
-            x1: scaledX,
-            y1: scaledY,
-        })
-        // draw a line
-        drawLine(prevCursorX, prevCursorY, cursorX, cursorY);
-    }
-    if (leftMouseDown && enableErase) {
-        eraseRects.push({
-            x: event.clientX,
-            y: event.clientY - 60,
-            w: eraserSize,
-            h: eraserSize
-        })
-        erase(event)
-    }
-
     if (singleTouch && enablePainting) {
         // add to history
         drawings.push({
             x0: prevScaledX,
             y0: prevScaledY,
             x1: scaledX,
-            y1: scaledY
+            y1: scaledY,
+            width: lineWidth,
+            color: colorPicker.value
         })
-        drawLine(prevTouch0X, prevTouch0Y, touch0X, touch0Y);
+        // draw a line
+        drawLine(cursorX, cursorY, prevCursorX, prevCursorY, lineWidth, colorPicker.value)
     }
 
     if (singleTouch && enableErase) {
-        eraseRects.push({
-            x: event.clientX,
-            y: event.clientY - 60,
-            w: eraserSize,
-            h: eraserSize
-        })
-        erase(event)
+        erase(event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop + 24, eraserSize)
     }
+
+    let src = canvas.toDataURL('image/png')
+    socket.emit('send', src, drawings, roomid)
 
     if (doubleTouch) {
         // get second touch coordinates

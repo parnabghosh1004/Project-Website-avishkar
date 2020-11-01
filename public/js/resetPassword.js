@@ -13,10 +13,14 @@ document.getElementById('resetPassword').addEventListener('submit', (e) => {
         })
     }).then(res => res.json())
         .then(data => {
-            if (data.error) console.log(data.error)
-            else {
-                window.location.href = `${window.location.origin}/signin`
-            }
+            document.querySelector('.toast-head').innerText = data.message ? "Success !" : "Error !"
+            document.querySelector('.toast-body').innerText = data.error || data
+            $(document).ready(() => {
+                $('.toast').toast('show')
+            })
+            setTimeout(() => {
+                if (data.message) window.location.href = `${window.location.origin}/signin`
+            }, 4000);
         }).catch(e => {
             console.log(e)
         })

@@ -101,14 +101,18 @@ io.on('connection', socket => {
 
     socket.on('new-user-joined', (user) => {
         rooms[user.roomId][socket.id] = user
-        io.to(user.roomId).emit('user-joined', rooms[user.roomId])
+        io.to(user.roomId).emit('user-joined', rooms[user.roomId], user.name)
     })
     socket.on('send', (src, drawings, roomid) => {
-        socket.to(roomid).broadcast.emit('recieve', src, drawings, roomid)
+        socket.to(roomid).broadcast.emit('receive', src, drawings, roomid)
     })
 
     socket.on('sendAccess', (type, socketId) => {
         socket.to(socketId).emit('receiveAccess', type)
+    })
+
+    socket.on('sendMsg', (msg, cname, roomid) => {
+        socket.to(roomid).broadcast.emit('receiveMsg', msg, cname)
     })
 
     let room_id

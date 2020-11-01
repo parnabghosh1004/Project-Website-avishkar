@@ -1,44 +1,41 @@
-// function myFunction() {
-//     var x = document.getElementById("sidebarCollapse");
-//     if (x.style.display === "none") {
-//       x.style.display = "block";
-//     } else {
-//       x.style.display = "none";
-//     }
-//   }
-function toggleHide(){
-    let btn = document.getElementById('sidebarCollapse');
-    let para = document.getElementById('sidebar');
-    if(para.style.display!= 'none'){
-        para.style.display = 'none';
+let roominfo = document.getElementById('roominfo');
+let chats = document.getElementById('chats');
+let sidebar1 = document.getElementById('sidebar1');
+let sidebar2 = document.getElementById('sidebar2');
+
+sidebar1.style.display = 'none'
+sidebar2.style.display = 'none'
+
+roominfo.addEventListener('click', () => {
+    if (sidebar1.style.display === "block") {
+        sidebar1.style.setProperty("display", "none", "important")
     }
     else {
-        para.style.display = 'block';
+        sidebar1.style.setProperty("display", "block", "important")
+        sidebar1.style.top = `${document.getElementById('topNav').clientHeight}px`
+        sidebar2.style.top = `${document.getElementById('topNav').clientHeight}px`
     }
-}
-function changeLanguage(language) {
-    var element = document.getElementById("url");
-    element.value = language;
-    element.innerHTML = language;
-}
-
-
-
-
-function showDropdown() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
+    sidebar2.style.setProperty("display", "none", "important")
+})
+chats.addEventListener('click', () => {
+    if (sidebar2.style.display === 'block') {
+        sidebar2.style.setProperty("display", "none", "important")
     }
-}
+    else {
+        sidebar2.style.setProperty("display", "block", "important")
+        sidebar1.style.top = `${document.getElementById('topNav').clientHeight}px`
+        sidebar2.style.top = `${document.getElementById('topNav').clientHeight}px`
+    }
+    sidebar1.style.setProperty("display", "none", "important")
+})
+
+
+window.addEventListener('resize', () => {
+    sidebar1.style.top = `${document.getElementById('topNav').clientHeight}px`
+    sidebar2.style.top = `${document.getElementById('topNav').clientHeight}px`
+    sidebar1.style.height = `${document.getElementById('content').clientHeight}px`
+    sidebar2.clientHeight = `${document.getElementById('content').clientHeight}px`
+})
+
+
+

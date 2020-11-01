@@ -51,61 +51,81 @@ p{
     color: #999;
 }
 
-/* #, 
-#:hover,
-#:focus{
-    color: inherit;
-    text-decoration: none;
-    transition: all 0.3s;
-} */
-
 /* Sidebar */
 .wrapper{
     display: flex;
     text-decoration: none;
     transition: all 0.3s;
-    
 }
-#sidebar{
+
+#sidebar1{
     min-width: 260px;
     max-width: 260px;
     background: #dcdee4;
     color:black;
     transition: all 0.3s;
+    position: absolute;
+    top: 57px;
+    right: 0;
+    z-index: 10;
+    height: 102%;
+}
+#sidebar2{
+    min-width: 260px;
+    max-width: 260px;
+    background: #dcdee4;
+    color:black;
+    transition: all 0.3s;
+    position: absolute;
+    top: 57px;
+    right: 0;
+    z-index: 10;
+    height: 102%;
 }
 
-#sidebar .active{
+.givemargin{
+    margin: 6px !important;
+}
+
+#sidebar1 .active{
+    margin-left: -250px;
+}
+#sidebar2 .active{
     margin-left: -250px;
 }
 
-#sidebar .sidebar-header{
+#sidebar1 .sidebar-header{
     padding: 20px;
     background: #6d7fcc;
 }
 
-#sidebar ul.components{
+#sidebar2 .sidebar-header{
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar1 ul.components{
     padding: 10px 10px;
     border-bottom: 1px solid #47748b;
 }
 
-#sidebar ul p{
+#sidebar1 ul p{
     color: #fff;
     padding: 10px;
-
 }
 
-#sidebar ul li a{
+#sidebar1 ul li a{
     padding: 0px;
     font-size: 1.1em;
     display: block;
 }
 
-#sidebar ul li a:hover{
+#sidebar1 ul li a:hover{
     color: #738605;
     background: #fff;
 }
 
-#sidebar ul li.active>a
+#sidebar1 ul li.active>a
 a[aria-expanded="true"]{
     color: #fff;
     background: #6d7fcc;
@@ -137,10 +157,56 @@ ul ul  a{
     transition: all 0.3s;   
 }
 
+.chats{
+    border: 2px solid;
+    margin: 6px;
+    border-radius: 4px;
+    height: 65%;
+    padding: 10px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+#inputText{
+    margin: 6px;
+    width: 95%;
+    height: 6%;
+    padding: 8px;
+    font-size: 1rem;
+}
+
+.insidetext{
+    font-size: 0.8rem;
+    color: black;
+    padding: 5px;
+    overflow: hidden;
+    border: 2px solid;
+    background-color: white;
+    border-radius: 8px;
+    margin: 5px 0px;
+}
+
+p{
+    margin-bottom: 0px;
+}
+
 .penStyle {
     cursor: url('https://icons.iconarchive.com/icons/iconsmind/outline/24/Pen-2-icon.png'), default;
 }
 
 .eraserStyle {
     cursor: url('https://icons.iconarchive.com/icons/iconsmind/outline/24/Eraser-2-icon.png'), default;
+}
+
+
+@media only screen and (min-width:1271px) and (max-width:1500px){
+    #Whiteboard{
+        display: none;
+    }
+
+}
+@media only screen and (max-width:1270px){
+    #Whiteboard{
+        display: block;
+    }
 }

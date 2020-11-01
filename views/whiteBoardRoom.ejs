@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Dream_Dev</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="topNav">
+    <a class="navbar-brand">Dream_Dev</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -8,35 +8,49 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/signin">Room Info</a>
+                <a class="nav-link" href="#" id="roominfo">Room Info</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/signup">Chats</a>
+                <a class="nav-link" href="#" id="chats">Chats</a>
             </li>
         </ul>
     </div>
 </nav>
 
+<!-- toast -->
+<div class="container" style="position: absolute;top:12%;left: 4%;z-index: 10;">
+    <div class="toast" data-delay=4000>
+        <div class="toast-header"><strong class="toast-head"></strong></div>
+        <div class="toast-body"></div>
+    </div>
+</div>
+
 <div class="wrapper">
-    <div id="content" style="padding:0px;">
+    <div id="content" style="padding:0px;" style="z-index: -1;">
         <div id="drawingboard">
-            <canvas id="canvas">Your browser
-                does not support HTML5 canvas</canvas><br>
-            <button id="selectBtn" class="btn btn-secondary"><i class="fas fa-mouse-pointer"></i></button>
-            <button id="pen" class="btn btn-secondary"><i class="fas fa-pen"></i></button>
-            <button id="eraser" class="btn btn-secondary"><i class="fas fa-eraser"></i></button>
-            <button id="newBoard" class="btn btn-primary">New Board</button>
-            <button id="clearDrawings" class="btn btn-primary">Clear</button>
-            <button id="saveDrawings" class="btn btn-primary">Save</button>
-            <label for="" id="penText">Pen size : </label>
-            <input type="range" name="" id="penSize" min="1" max="20" step="1" value="8">
-            <label for="" id="eraseText">Eraser Size : </label>
-            <input type="range" id="eraserSize" min="5" max="60" step="5" value="20">
-            <label for="" id="colorText">Color : </label>
-            <input type="color" name="" id="color-picker">
+            <canvas id="canvas">Your browserdoes not support HTML5 canvas</canvas><br>
+            <button id="selectBtn" class="btn btn-secondary givemargin"><i class=" fas fa-mouse-pointer"></i></button>
+            <button id="pen" class="btn btn-secondary givemargin"><i class="fas fa-pen"></i></button>
+            <button id="eraser" class="btn btn-secondary givemargin"><i class="fas fa-eraser"></i></button>
+            <button id="newBoard" class="btn btn-primary givemargin">New Board</button>
+            <button id="clearDrawings" class="btn btn-primary givemargin">Clear</button>
+            <button id="saveDrawings" class="btn btn-primary givemargin">Save</button>
+            <div style="display: inline-block;">
+                <label id="penText" class="givemargin">Pen size : </label>
+                <input type="range" id="penSize" min="1" max="20" step="1" value="8" class="givemargin">
+            </div>
+            <div style="display: inline-block;">
+
+                <label id="eraseText" class="givemargin">Eraser Size : </label>
+                <input type="range" id="eraserSize" min="5" max="60" step="5" value="20" class="givemargin">
+            </div>
+            <div style="display: inline-block;">
+                <label id="colorText" class="givemargin">Color : </label>
+                <input type="color" id="color-picker" class="givemargin">
+            </div>
         </div>
     </div>
-    <nav id="sidebar">
+    <nav id="sidebar1" class="roominfo">
         <div class="sidebar-header">
             <h4>Room Info</h4>
         </div>
@@ -56,6 +70,14 @@
             </li>
         </ul>
     </nav>
+    <nav id="sidebar2" class="classinfo">
+        <div class="sidebar-header">
+            <h4>Chats</h4>
+        </div>
+        <div class="chats"></div>
+        <input type="text" id="inputText">
+        <buttton class="btn btn-primary" id="sendBtn"><i class="fas fa-paper-plane"></i> Send</buttton>
+    </nav>
 </div>
 
 <%- contentFor('style') %>
@@ -67,6 +89,7 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/WhiteBoardRoom.js"></script>
+<script src="/static/js/index1.js"></script>
 
 <%- contentFor('title') %>
-Dream_Dev - WhiteBoard
+Dream_Dev | WhiteBoard

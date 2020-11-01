@@ -59,7 +59,7 @@ router.put('/saveWhiteBoard', requireLogin, (req, res) => {
             , { new: true, useFindAndModify: false },
             (e, result) => {
                 if (e) return res.status(422).json({ error: e })
-                res.json({ message: "saved successfully !" })
+                res.json({ message: "Saved successfully !" })
                 cloudinary.uploader.destroy(req.body.prevBoardId, (e, result) => {
                     console.log(e, result)
                 })
@@ -73,7 +73,7 @@ router.put('/saveWhiteBoard', requireLogin, (req, res) => {
 
             (e, result) => {
                 if (e) return res.status(422).json({ error: e })
-                res.json({ message: "saved successfully !" })
+                res.json({ message: "Saved successfully !" })
             }
         )
     }
@@ -99,7 +99,7 @@ router.put('/deleteBoard', requireLogin, (req, res) => {
     }, { new: true, useFindAndModify: false },
         (e, result) => {
             if (e) return res.status(422).json({ error: e })
-            res.json({ message: "deleted successfully !" })
+            res.json({ message: "Deleted successfully !" })
             cloudinary.uploader.destroy(req.body.img_id, (e, result) => {
                 console.log(e, result)
             })

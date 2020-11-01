@@ -32,7 +32,7 @@ window.addEventListener('load', () => {
                         <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#picChange">Change Profile photo</a>
                     </div>
                 </div>
-                <div class="accordion mx-5" id="accordionExample" style="width: 70%;">
+                <div class="accordion mx-5 my-5" id="accordionExample" style="width: 90%; align-self: flex-start;">
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
@@ -93,38 +93,35 @@ window.addEventListener('load', () => {
                     </div>
                 </div>
                 </div>
+
                 <div class="modal fade" id="picChange" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Update Profile Pic</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-            </div>
-            <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-                <img src="${data.pic}" alt="profile" style="width:40%">
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                <img src="${data.pic}" alt="profile" id="prof">
                     <form id="changePic">
                         <div class="form-row">
-                            <div class="col-lg-7">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="newPic"
-                                        aria-describedby="inputGroupFileAddon01" multiple="false" accept="image/*" style="width:150%">
+                                        aria-describedby="inputGroupFileAddon01" multiple="false" accept="image/*">
                                     <label class="custom-file-label" for="inputGroupFile01">Upload a Profile Pic</label>
                                 </div>
-                            </div>
                         </div>
-                        <div class="form-row my-2">
-                            <div class="col-lg-7">
+                        <div class="form-row">
                                 <button type="submit" class="btn btn-primary btn-block">Update Pic</button>
-                            </div>
                         </div>
                     </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
-            </div>
-        </div>
+                </div>
+                </div>
     </div>
     </div> `
                 setTimeout(() => {
@@ -133,13 +130,13 @@ window.addEventListener('load', () => {
                         JSON.parse(localStorage.getItem('user')).WhiteBoards.forEach(wb => {
                             document.getElementById('myWhiteBoards').innerHTML += `<li style="max-width:100%"><div class="card" style="width: 100%">
                             <div class="row no-gutters">
-                                <div class="col-sm-5">
+                                <div class="col-sm-5 img-board">
                                     <img class="card-img" src="${wb.img}" alt="...">
                                 </div>
                                 <div class="col-sm-7">
                                     <div class="card-body">
                                     <div class="accordion" id="${wb.img_id}">
-                                    <div class="card" style="width:99%">
+                                    <div class="card share" style="width:99%">
                                       <div class="card-header" id="heading${wb.img_id}">
                                         <h2 class="mb-0">
                                           <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${wb.img_id}" aria-expanded="true" aria-controls="collapse${wb.img_id}">
@@ -151,10 +148,10 @@ window.addEventListener('load', () => {
                                         <div class="card-body">
                                         <p>Enter the email id to whom you want to share board</p><br>
                                         <form class="form-inline" id="${wb.img}" onsubmit="shareLink(event)">
-                                            <div class="form-group mx-sm-3 mb-2">
+                                            <div class="form-group my-2">
                                                 <input type="email" class="form-control" id="email${wb.img}" placeholder="Email" required>
                                             </div>
-                                            <button type="submit" class="btn btn-primary mb-2">Share Link</button>
+                                            <button type="submit" class="btn btn-primary mx-2">Share Link</button>
                                         </form>
                                         </div>
                                       </div>
@@ -199,6 +196,11 @@ function shareLink(e) {
         })
     }).then(res => res.json())
         .then(result => {
+            document.querySelector('.toast-head').innerText = result.message ? "Success !" : "Error !"
+            document.querySelector('.toast-body').innerText = result.message || result.error
+            $(document).ready(() => {
+                $('.toast').toast('show')
+            })
             console.log(result)
         })
 }
