@@ -25,6 +25,10 @@
         margin: 1vh;
     }
 
+    #accordionExample{
+        margin: auto !important;
+    }
+
     #dashboard {
         flex-direction: column !important;
     }

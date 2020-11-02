@@ -548,7 +548,7 @@ function onMouseMove(event) {
             color: colorPicker.value
         })
         // draw a line
-        drawLine(cursorX, cursorY, prevCursorX, prevCursorY, lineWidth, colorPicker.value)
+        drawLine(prevCursorX, prevCursorY, scaledX, scaledY, lineWidth, colorPicker.value)
     }
     if (enableErase) {
         if (leftMouseDown) erase(event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop + 24, eraserSize)
@@ -638,7 +638,7 @@ function onTouchMove(event) {
             color: colorPicker.value
         })
         // draw a line
-        drawLine(cursorX, cursorY, prevCursorX, prevCursorY, lineWidth, colorPicker.value)
+        drawLine(prevCursorX, prevCursorY, scaledX, scaledY, lineWidth, colorPicker.value)
     }
 
     if (singleTouch && enableErase) {
@@ -647,6 +647,7 @@ function onTouchMove(event) {
 
     let src = canvas.toDataURL('image/png')
     socket.emit('send', src, roomid)
+    socket.emit('sendDrawings', drawings, roomid)
 
     if (doubleTouch) {
         // get second touch coordinates

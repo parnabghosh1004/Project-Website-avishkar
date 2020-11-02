@@ -32,7 +32,7 @@ window.addEventListener('load', () => {
                         <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#picChange">Change Profile photo</a>
                     </div>
                 </div>
-                <div class="accordion mx-5 my-5" id="accordionExample" style="width: 90%; align-self: flex-start;">
+                <div class="accordion my-5 mx-5" id="accordionExample" style="width: 90%; align-self: flex-start;">
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
