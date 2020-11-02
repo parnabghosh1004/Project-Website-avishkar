@@ -699,8 +699,11 @@ function onTouchMove(event) {
     prevTouches[0] = event.touches[0];
     prevTouches[1] = event.touches[1];
 }
+
 function onTouchEnd(event) {
     singleTouch = false;
     doubleTouch = false;
 }
+
+// end
 
