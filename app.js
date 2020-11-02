@@ -6,11 +6,13 @@ const { MongoURI } = require('./config/keys')
 const expressLayouts = require('express-ejs-layouts')
 const port = process.env.PORT || 5000
 
+// socket vars
 const http = require('http')
 const server = http.createServer(app)
 const socketio = require('socket.io')
 const io = socketio(server)
 
+// encyption vars
 const algorithm = 'aes-256-ctr';
 const secretKey = 'vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3'
 const iv = crypto.randomBytes(16)
