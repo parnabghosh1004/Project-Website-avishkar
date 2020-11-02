@@ -48,7 +48,6 @@ app.use(require('./routes/fileRender'))
 
 
 // utility functions
-
 function encrypt(text) {
     const cipher = crypto.createCipheriv(algorithm, secretKey, iv)
     const encrypted = Buffer.concat([cipher.update(text), cipher.final()])

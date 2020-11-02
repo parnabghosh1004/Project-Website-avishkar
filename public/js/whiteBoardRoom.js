@@ -158,7 +158,8 @@ socket.on('receiveMsg', (msg, name) => {
 })
 
 socket.on('receiveAccess', (type, d) => {
-    canvas.style.cursor = 'initial'
+    canvas.classList.remove('penStyle')
+    canvas.classList.remove('eraserStyle')
     if (type === 'allow') {
         document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Allowed'
         showFeatures()

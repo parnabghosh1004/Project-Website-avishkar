@@ -195,11 +195,15 @@ p{
 }
 
 .penStyle {
-    cursor: url('https://icons.iconarchive.com/icons/iconsmind/outline/24/Pen-2-icon.png'), default;
+    cursor: url('https://icons.iconarchive.com/icons/iconsmind/outline/24/Pen-2-icon.png'), default !important;
 }
 
 .eraserStyle {
-    cursor: url('https://icons.iconarchive.com/icons/iconsmind/outline/24/Eraser-2-icon.png'), default;
+    cursor: url('https://icons.iconarchive.com/icons/iconsmind/outline/24/Eraser-2-icon.png'), default !important;
+}
+
+.simpleStyle {
+    cursor: initial !important;
 }
 
 
