@@ -705,3 +705,5 @@ function onTouchEnd(event) {
     doubleTouch = false;
 }
 
+// end
+
