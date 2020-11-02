@@ -563,15 +563,15 @@ function onMouseMove(event) {
     if (leftMouseDown && enablePainting) {
         // add the line to our drawing history
         drawings.push({
-            x0: prevScaledX,
-            y0: prevScaledY,
-            x1: scaledX,
-            y1: scaledY,
+            x0: prevCursorX,
+            y0: prevCursorY,
+            x1: cursorX,
+            y1: cursorY,
             width: lineWidth,
             color: colorPicker.value
         })
         // draw a line
-        drawLine(prevCursorX, prevCursorY, scaledX, scaledY, lineWidth, colorPicker.value)
+        drawLine(prevCursorX, prevCursorY, cursorX, cursorY, lineWidth, colorPicker.value)
     }
     if (enableErase) {
         if (leftMouseDown) erase(event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop + 24, eraserSize)

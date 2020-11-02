@@ -12,7 +12,11 @@ signupForm.addEventListener('submit', (e) => {
     let pic_id = undefined
 
     if (password !== confirmPassword) {
-        console.log('error')
+        document.querySelector('.toast-head').innerText = "Error !"
+        document.querySelector('.toast-body').innerText = "Password and confirm password does not match each other !"
+        $(document).ready(() => {
+            $('.toast').toast('show')
+        })
     }
     else {
         if (pic) {

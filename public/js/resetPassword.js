@@ -14,7 +14,7 @@ document.getElementById('resetPassword').addEventListener('submit', (e) => {
     }).then(res => res.json())
         .then(data => {
             document.querySelector('.toast-head').innerText = data.message ? "Success !" : "Error !"
-            document.querySelector('.toast-body').innerText = data.error || data
+            document.querySelector('.toast-body').innerText = data.error || data.message
             $(document).ready(() => {
                 $('.toast').toast('show')
             })
