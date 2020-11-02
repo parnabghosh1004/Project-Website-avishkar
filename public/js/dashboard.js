@@ -201,7 +201,6 @@ function shareLink(e) {
             $(document).ready(() => {
                 $('.toast').toast('show')
             })
-            console.log(result)
         })
 }
 
@@ -275,7 +274,13 @@ document.addEventListener('change', () => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.error) console.log(data.error)
+                if (data.error) {
+                    document.querySelector('.toast-head').innerText = "Error !"
+                    document.querySelector('.toast-body').innerText = data.error
+                    $(document).ready(() => {
+                        $('.toast').toast('show')
+                    })
+                }
                 else window.location.href = `${window.location.origin}/room/${data.iv}/${data.content}`
             })
             .catch(e => console.log(e))
@@ -302,7 +307,13 @@ document.addEventListener('change', () => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.error) console.log(data.error)
+                if (data.error) {
+                    document.querySelector('.toast-head').innerText = "Error !"
+                    document.querySelector('.toast-body').innerText = data.error
+                    $(document).ready(() => {
+                        $('.toast').toast('show')
+                    })
+                }
                 else window.location.href = `${window.location.origin}/room/${data.iv}/${data.content}`
             })
             .catch(e => console.log(e))

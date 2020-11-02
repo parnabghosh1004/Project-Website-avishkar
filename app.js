@@ -62,11 +62,14 @@ function decrypt(hash) {
     return decrpyted.toString()
 }
 
+// Entry point
 app.get('/', (req, res) => {
     res.redirect('/dashboard')
 })
 
 const requireLogin = require('./middleware/requireLogin')
+
+// socket and rooms
 
 let rooms = {}
 let details = { name: "user", roomId: "roomid", type: "user", id: "id" }, organiser
@@ -103,12 +106,16 @@ io.on('connection', socket => {
         rooms[user.roomId][socket.id] = user
         io.to(user.roomId).emit('user-joined', rooms[user.roomId], user.name)
     })
-    socket.on('send', (src, drawings, roomid) => {
-        socket.to(roomid).broadcast.emit('receive', src, drawings, roomid)
+    socket.on('send', (src, roomid) => {
+        socket.to(roomid).broadcast.emit('receive', src, roomid)
     })
 
-    socket.on('sendAccess', (type, socketId) => {
-        socket.to(socketId).emit('receiveAccess', type)
+    socket.on('sendAccess', (type, drawings, socketId) => {
+        socket.to(socketId).emit('receiveAccess', type, drawings)
+    })
+
+    socket.on('sendDrawings', (drawings, roomid) => {
+        socket.to(roomid).emit('receiveDrawings', drawings)
     })
 
     socket.on('sendMsg', (msg, cname, roomid) => {
@@ -131,6 +138,7 @@ io.on('connection', socket => {
     })
 })
 
+// server port
 server.listen(port, () => {
     console.log(`Server running on port ${port}`)
 })

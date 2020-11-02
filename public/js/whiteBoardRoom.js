@@ -2,8 +2,6 @@ const socket = io('/')
 const ClientName = document.getElementById('ClientName')
 const roomID = document.getElementById('roomID')
 
-// canvas
-
 const canvas = document.getElementById("canvas");
 const eraser = document.getElementById('eraser')
 const pen = document.getElementById('pen')
@@ -32,6 +30,7 @@ let cursorY;
 let prevCursorX;
 let prevCursorY;
 
+// painting and erasing
 let enablePainting = false
 let enableErase = false
 let lineWidth = penSize.value;
@@ -44,6 +43,7 @@ let offsetY = 0;
 // zoom amount
 let scale = 1;
 
+// client specifications
 let cname = "name", roomid = "roomid", type = "admin", id = 'id'
 
 socket.on('user-joined', (users, name) => {
@@ -74,7 +74,7 @@ socket.on('user-joined', (users, name) => {
     }
     if (type == "admin") {
         let src = canvas.toDataURL('image/png')
-        socket.emit('send', src, drawings, roomid)
+        socket.emit('send', src, roomid)
     }
 })
 
@@ -140,25 +140,24 @@ function redrawCanvas() {
         drawLine(toScreenX(line.x0), toScreenY(line.y0), toScreenX(line.x1), toScreenY(line.y1), line.width, line.color)
     }
     let src = canvas.toDataURL('image/png')
-    socket.emit('send', src, drawings, roomid)
+    socket.emit('send', src, roomid)
 }
 redrawCanvas()
 
-socket.on('receive', (src, d, roomid) => {
+socket.on('receive', (src, roomid) => {
     let img = new Image()
     img.src = src
     img.crossOrigin = "anonymous"
     img.onload = () => {
         context.drawImage(img, 0, 0)
     }
-    drawings = d
 })
 
 socket.on('receiveMsg', (msg, name) => {
     appendMsg(msg, name)
 })
 
-socket.on('receiveAccess', (type) => {
+socket.on('receiveAccess', (type, d) => {
     if (type === 'allow') {
         document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Allowed'
         showFeatures()
@@ -167,6 +166,11 @@ socket.on('receiveAccess', (type) => {
         document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Denied'
         hideFeatures()
     }
+    drawings = d
+})
+
+socket.on('receiveDrawings', (d) => {
+    drawings = d
 })
 
 // if the window changes size, redraw the canvas
@@ -226,11 +230,11 @@ function showFeatures() {
 function allowDenyAccess(socketId) {
     if (document.getElementById(socketId).innerText === 'Allow Board Access') {
         document.getElementById(socketId).innerText = 'Deny Board Access'
-        socket.emit('sendAccess', 'allow', socketId)
+        socket.emit('sendAccess', 'allow', drawings, socketId)
     }
     else {
         document.getElementById(socketId).innerText = 'Allow Board Access'
-        socket.emit('sendAccess', 'deny', socketId)
+        socket.emit('sendAccess', 'deny', [], socketId)
     }
 }
 
@@ -313,10 +317,8 @@ function erase(x, y, s) {
     context.fillStyle = '#ffffff'
     context.fillRect(x, y, s, s)
     drawings = drawings.filter(d => {
-        return !((Math.abs(x - d.x0) < s / 2 && Math.abs(y - d.y0) < s / 2) && (Math.abs(x - d.x1) < s / 2 && Math.abs(y - d.y1) < s / 2))
+        return !((Math.abs(x - toScreenX(d.x0)) < s / 2 && Math.abs(y - toScreenY(d.y0)) < s / 2) || (Math.abs(x - toScreenX(d.x1)) < s / 2 && Math.abs(y - toScreenY(d.y1)) < s / 2))
     })
-    console.log(drawings.length)
-    // redrawCanvas()
 }
 
 socket.on('i-have-joined', (details, organiser) => {
@@ -552,7 +554,9 @@ function onMouseMove(event) {
         if (leftMouseDown) erase(event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop + 24, eraserSize)
     }
     let src = canvas.toDataURL('image/png')
-    socket.emit('send', src, drawings, roomid)
+    socket.emit('send', src, roomid)
+
+    socket.emit('sendDrawings', drawings, roomid)
 
     if (rightMouseDown) {
         // move the screen
@@ -569,6 +573,7 @@ function onMouseUp() {
     rightMouseDown = false;
 }
 function onMouseWheel(event) {
+
     const deltaY = event.deltaY;
     const scaleAmount = -deltaY / 500;
     scale = scale * (1 + scaleAmount);
@@ -641,7 +646,7 @@ function onTouchMove(event) {
     }
 
     let src = canvas.toDataURL('image/png')
-    socket.emit('send', src, drawings, roomid)
+    socket.emit('send', src, roomid)
 
     if (doubleTouch) {
         // get second touch coordinates

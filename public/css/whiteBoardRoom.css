@@ -87,6 +87,10 @@ p{
     margin: 6px !important;
 }
 
+.btn{
+    margin: 6px !important;
+}
+
 #sidebar1 .active{
     margin-left: -250px;
 }
