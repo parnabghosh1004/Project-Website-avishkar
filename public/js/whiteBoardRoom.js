@@ -158,13 +158,36 @@ socket.on('receiveMsg', (msg, name) => {
 })
 
 socket.on('receiveAccess', (type, d) => {
+    canvas.style.cursor = 'initial'
     if (type === 'allow') {
         document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Allowed'
         showFeatures()
+        // Touch Event Handlers - Mobile and tab
+        canvas.addEventListener('touchstart', onTouchStart)
+        canvas.addEventListener('touchend', onTouchEnd)
+        canvas.addEventListener('touchcancel', onTouchEnd)
+        canvas.addEventListener('touchmove', onTouchMove)
+        // Mouse Event Handlers - Window
+        canvas.addEventListener('mousedown', onMouseDown)
+        canvas.addEventListener('mouseup', onMouseUp, false)
+        canvas.addEventListener('mouseout', onMouseUp, false)
+        canvas.addEventListener('mousemove', onMouseMove, false)
+        canvas.addEventListener('wheel', onMouseWheel, false)
     }
     else if (type === 'deny') {
         document.getElementById('allowAccess').innerText = 'WhiteBoard Controls : Denied'
         hideFeatures()
+        // Touch Event Handlers - Mobile and tab
+        canvas.removeEventListener('touchstart', onTouchStart)
+        canvas.removeEventListener('touchend', onTouchEnd)
+        canvas.removeEventListener('touchcancel', onTouchEnd)
+        canvas.removeEventListener('touchmove', onTouchMove)
+        // Mouse Event Handlers - Window
+        canvas.removeEventListener('mousedown', onMouseDown)
+        canvas.removeEventListener('mouseup', onMouseUp, false)
+        canvas.removeEventListener('mouseout', onMouseUp, false)
+        canvas.removeEventListener('mousemove', onMouseMove, false)
+        canvas.removeEventListener('wheel', onMouseWheel, false)
     }
     drawings = d
 })
@@ -364,20 +387,20 @@ socket.on('i-have-joined', (details, organiser) => {
         JSON.parse(localStorage.getItem('user')).WhiteBoards.forEach(wb => {
             document.getElementById('pageSubmenu2').innerHTML += `<li style="margin-bottom:10px" id="board${wb.img}"><div class="card" style="width: 15rem; margin:2px"><img class="card-img-top" src="${wb.img}" alt="Card image cap"></div><button type="button" class="btn btn-primary btn-sm" id="${wb.img} ${wb.img_id}" onclick="editBoard(this.id)">Edit</button><button type="button" class="btn btn-primary btn-sm" id="del${wb.img} ${wb.img_id}" onclick="delBoard(this.id)">Delete</button></li>`
         })
+        // Touch Event Handlers - Mobile and tab
+        canvas.addEventListener('touchstart', onTouchStart)
+        canvas.addEventListener('touchend', onTouchEnd)
+        canvas.addEventListener('touchcancel', onTouchEnd)
+        canvas.addEventListener('touchmove', onTouchMove)
+        // Mouse Event Handlers - Window
+        canvas.addEventListener('mousedown', onMouseDown)
+        canvas.addEventListener('mouseup', onMouseUp, false)
+        canvas.addEventListener('mouseout', onMouseUp, false)
+        canvas.addEventListener('mousemove', onMouseMove, false)
+        canvas.addEventListener('wheel', onMouseWheel, false)
     }
 
-    // Mouse Event Handlers - Window
-    canvas.addEventListener('mousedown', onMouseDown)
-    canvas.addEventListener('mouseup', onMouseUp, false)
-    canvas.addEventListener('mouseout', onMouseUp, false)
-    canvas.addEventListener('mousemove', onMouseMove, false)
-    canvas.addEventListener('wheel', onMouseWheel, false)
 
-    // Touch Event Handlers - Mobile and tab
-    canvas.addEventListener('touchstart', onTouchStart)
-    canvas.addEventListener('touchend', onTouchEnd)
-    canvas.addEventListener('touchcancel', onTouchEnd)
-    canvas.addEventListener('touchmove', onTouchMove)
 
     penSize.addEventListener('change', () => {
         lineWidth = penSize.value
@@ -706,4 +729,5 @@ function onTouchEnd(event) {
 }
 
 // end
+
 
